@@ -77,7 +77,7 @@
         }
       }
     },
-    "/comments/{userId}": {
+    "/comments/users/{userId}": {
       "get": {
         "tags": [
           "Comments"
@@ -100,7 +100,7 @@
         }
       }
     },
-    "/comments/{recipeId}": {
+    "/comments/recipes/{recipeId}": {
       "get": {
         "tags": [
           "Comments"
