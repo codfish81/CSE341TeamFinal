@@ -1,0 +1,141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Flavor Hub API Docs",
+    "description": "This is the documentation for Flavor Hub's api endpoints",
+    "version": "1.0.0"
+  },
+  "host": "",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Get Comment by Comment Id",
+        "description": "This will get a comment by its Id",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Comment id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Update comment",
+        "description": "Updates a comment by id",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Comment ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Delete comment",
+        "description": "Delete comment by Id",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Comment id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/comments/users/{userId}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Get comments by User",
+        "description": "This will all comments by a certain user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/comments/recipes/{recipeId}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Get Comments by Recipe",
+        "description": "This will get all comments by a certain recipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/comments/": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Create a new Comment",
+        "description": "This request creates a new comment",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

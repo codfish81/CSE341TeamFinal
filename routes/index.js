@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
-router.get('/recipes', (req, res, next) => {
-    res.send("Here are the recipes");
-})
+// router.use('/recipes', require('./recipe'));
+// router.use('/users', require('./user'));
+// router.use('/modifications', require('./modification'));
+router.use('/comments', require('./comment'));
+
 
 module.exports = router;
