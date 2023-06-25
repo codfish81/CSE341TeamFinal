@@ -12,139 +12,20 @@
     "https"
   ],
   "paths": {
-    "/recipe/": {
-      "post": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Update recipe by id",
-        "description": "This route allows you to update a recipe by its id.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipe/{recipeId}": {
-      "put": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Update recipe by id",
-        "description": "This route allows you to update a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/users/{userId}": {
       "get": {
         "tags": [
-          "Recipes"
+          "Users"
         ],
-        "summary": "Get recipe by id",
-        "description": "This route allows you to retrieve a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Delete recipe by id",
-        "description": "This route allows you to delete a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipe/{category}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get all recipes of a category",
-        "description": "This route allows you to retrieve all recipes of a specific category.",
-        "parameters": [
-          {
-            "name": "category",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipe/{keyWord}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipes by keyword anywhere",
-        "description": "This route allows you to retrieve recipes by searching for a keyword.",
-        "parameters": [
-          {
-            "name": "keyWord",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipe/{userId}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipes submitted by a user",
-        "description": "This route allows you to retrieve recipes submitted by a specific user.",
+        "summary": "Get user by User Id",
+        "description": "This will get a user by its Id",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User id"
           }
         ],
         "responses": {
@@ -152,21 +33,20 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/recipe/{recipeId}/uploadImage": {
-      "post": {
+      },
+      "put": {
         "tags": [
-          "Recipes"
+          "Users"
         ],
-        "summary": "Add recipe image",
-        "description": "This route allows you to add an image to a recipe.",
+        "summary": "Update user",
+        "description": "Updates a user by id",
         "parameters": [
           {
-            "name": "recipeId",
+            "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User ID."
           }
         ],
         "responses": {
@@ -174,23 +54,37 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/recipe/{recipeId}/deleteImage": {
+      },
       "delete": {
         "tags": [
-          "Recipes"
+          "Users"
         ],
-        "summary": "Add recipe image",
-        "description": "This route allows you to remove an image from a recipe.",
+        "summary": "Delete user",
+        "description": "Delete user by Id",
         "parameters": [
           {
-            "name": "recipeId",
+            "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User id"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new User",
+        "description": "This request creates a new user",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -315,6 +209,7 @@
         ],
         "summary": "Create a new Comment",
         "description": "This request creates a new comment",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
