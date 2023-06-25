@@ -19,10 +19,41 @@
         ],
         "summary": "Update recipe by id",
         "description": "This route allows you to update a recipe by its id.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "ingredients": {
+                  "example": "any"
+                },
+                "instructions": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "servingSize": {
+                  "example": "any"
+                },
+                "dateAdded": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
           }
         }
       }

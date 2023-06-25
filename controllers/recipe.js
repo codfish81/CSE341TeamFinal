@@ -15,7 +15,7 @@ async function addRecipe(req, res, next) {
         const { title, description, ingredients, instructions, time, servingSize, dateAdded = Date() } = req.body;
 
         // Insert recipe into database
-        const result = await dbConnect.getDb().db().collection('recipe').insertOne({
+        const result = await mongo.getConnection().db('flavor-hub').collection('recipe').insertOne({
             title,
             description,
             ingredients,
