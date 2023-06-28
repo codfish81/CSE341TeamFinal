@@ -312,6 +312,24 @@
         "description": "This request creates a new user",
         "parameters": [
           {
+            "name": "firstname",
+            "description": "User Firstname",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lastname",
+            "description": "User Lastname",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "description": "User Email",
+            "in": "query",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {

@@ -1,17 +1,21 @@
-const mongo = require('../db/connect');
+const mongodb = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
+const User = require('../model/user')
 
-async function createNewUser(req, res, next){
+const createNewUser = async(req, res, next) => {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Create a new User'
     // #swagger.description = 'This request creates a new user'
+    // #swagger.parameters['firstname'] = { description: 'User Firstname' }
+    // #swagger.parameters['lastname'] = { description: 'User Lastname' }
+    // #swagger.parameters['email'] = { description: 'User Email' }
     try{
-        const user = {
+        const user = new User({
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           email: req.body.email
-        };
-        const response = await mongodb.getDb().db('flavor-hub').collection('user').insertOne(user);
+        });
+        const response = await mongodb.getConnection().db('flavor-hub').collection('user').insertOne(user);
         if (response.acknowledged) {
           res.status(201).json(response);
         } else {
@@ -22,18 +26,24 @@ async function createNewUser(req, res, next){
       }
     };
 
-async function getUserByUserId(req, res, next){
+const getUserByUserId = async(req, res, next) => {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get user by User Id'
     // #swagger.description = 'This will get a user by its Id'
     // #swagger.parameters['userId'] = { description: 'User id' }
 
+    //const userId = new ObjectId(req.params.userId);
+
     try{
-        if (!ObjectId.isValid(req.params.id)){
+        if (!ObjectId.isValid(req.params.userId)){
           res.status(400).json('Must use valid id to get User.');
         }
-          const userId = new ObjectId(req.params.id);
-          const result = await mongodb.getDb().db('flavor-hub').collection('user').find({_id: userId});
+          const userId = new ObjectId(req.params.userId);
+          const result = await
+          mongodb.getConnection()
+          .db('flavor-hub')
+          .collection('user')
+          .find({_id: userId});
           result.toArray().then((lists) => {
           res.setHeader('Content-Type', 'application/json');
           res.status(200).json(lists[0]);
@@ -55,10 +65,10 @@ async function updateUser(req, res, next){
     } 
     */
     try{
-        if (!ObjectId.isValid(req.params.id)){
+        if (!ObjectId.isValid(req.params.userId)){
           res.status(400).json('Must use valid id to update user.');
         }
-        const userId = new ObjectId(req.params.id);
+        const userId = new ObjectId(req.params.userId);
         // be aware of updateOne if you only want to update specific fields
         const user = {
           firstName: req.body.firstName,
@@ -66,7 +76,7 @@ async function updateUser(req, res, next){
           email: req.body.email
         };
         const response = await mongodb
-          .getDb()
+          .getConnection()
           .db('flavor-hub')
           .collection('user')
           .replaceOne({ _id: userId }, user);
@@ -87,11 +97,11 @@ async function deleteUser(req, res, next){
     // #swagger.description = 'Delete user by Id'
     // #swagger.parameters['userId'] = { description: 'User id' }
     try{
-        if (!ObjectId.isValid(req.params.id)){
+        if (!ObjectId.isValid(req.params.userId)){
           res.status(400).json('Must use valid id to delete user.');
         }
-        const userId = new ObjectId(req.params.id);
-        const response = await mongodb.getDb().db('flavor-hub').collection('user').deleteOne({ _id: userId }, true);
+        const userId = new ObjectId(req.params.userId);
+        const response = await mongodb.getConnection().db('flavor-hub').collection('user').deleteOne({ _id: userId }, true);
         console.log(response);
         if (response.deletedCount > 0) {
           res.status(200).send();
