@@ -12,10 +12,10 @@ async function getCommentByCommentId(req, res, next){
     try {
         const result = await mongo
             .getConnection()
-            .db("flavor-hub")
-            .collection("comment").find({_id: commentId});
+            .db('flavor-hub')
+            .collection('comment').find({_id: commentId});
         result.toArray().then((lists) => {
-            res.setHeader("Content-Type", "application/json");
+            res.setHeader('Content-Type', 'application/json');
             res.status(200).json(lists[0]);
         });
     } catch (error) {
@@ -34,10 +34,10 @@ async function getCommentsByUserId(req, res, next){
     try {
         const result = await mongo
             .getConnection()
-            .db("flavor-hub")
-            .collection("comment").find({userId: userId});
+            .db('flavor-hub')
+            .collection('comment').find({userId: userId});
         result.toArray().then((list) => {
-            res.setHeader("Content-Type", "application/json");
+            res.setHeader('Content-Type', 'application/json');
             res.status(200).json(list);
         });
     } catch (error) {
@@ -54,10 +54,10 @@ async function getCommentsByRecipeId(req, res, next){
     try {
         const result = await mongo
             .getConnection()
-            .db("flavor-hub")
-            .collection("comment").find({recipeId: recipeId});
+            .db('flavor-hub')
+            .collection('comment').find({recipeId: recipeId});
         result.toArray().then((list) => {
-            res.setHeader("Content-Type", "application/json");
+            res.setHeader('Content-Type', 'application/json');
             res.status(200).json(list);
         });
     } catch (error) {
@@ -74,17 +74,40 @@ async function createNewComment(req, res, next){
         description: 'Comment object',
         required: true,
         schema: {
-            $eventName: 'First Anniversary',
-            $eventDescription: 'We went to St George and ...',
-            $lat: 37.0965,
-            $long: 113.5684,
-            $eventStartDate: '2011-10-05T14:48:00.000Z',
-            $eventEndDate: '2011-10-05T14:48:00.000Z'
+            $userId: '6497d5d064035756f4d29abc',
+            $recipeId: '6497d5d064035756f481def5',
+            $text: 'I really like this recipe, but...'
         }
     } */
- 
-    res.send('create new comment');
-}
+
+    try {
+        // Get parameters from body and assign to variables
+        const {userId, recipeId, text } = req.body;
+
+        // turn userId and recipeId into ObjectIds
+
+        const user = new ObjectId(userId);
+        const recipe = new ObjectId(recipeId);
+
+        // Create document and insert into collection
+
+        const comment = {
+            userId: user,
+            recipeId: recipe,
+            text
+        };
+
+        const result = await mongo
+            .getConnection()
+            .db('flavor-hub')
+            .collection('comment')
+            .insertOne(comment);
+        res.send(result).status(200);
+            
+    } catch (error) {
+        res.status(500).send("Error creating comment: " + error);
+    }
+ }
 async function updateComment(req, res, next){
     // #swagger.tags = ['Comments']
     // #swagger.summary = 'Update comment'
@@ -95,15 +118,50 @@ async function updateComment(req, res, next){
         required: true,
         type: 'string'
     } 
+    #swagger.parameters['comment'] = { 
+        in: 'body',
+        description: 'Comment object',
+        required: true,
+        schema: {
+            text: 'I really like this recipe, but...'
+        }
     */
-    res.send('update comment');
+    try {
+        // get comment id from parameter and text from request body
+        const commentId = new ObjectId(req.params.commentId);
+        const {text} = req.body;
+
+        // update document and display results
+        const result = await mongo.getConnection()
+            .db('flavor-hub')
+            .collection('comment')
+            .updateOne({_id: commentId}, {$set: {text: text}});
+        res.send(result).status(200);
+    } catch (error) {
+        res.status(501).send("Error updating comment: " + error);
+    }
 }
 async function deleteComment(req, res, next){
     // #swagger.tags = ['Comments']
     // #swagger.summary = 'Delete comment'
     // #swagger.description = 'Delete comment by Id'
     // #swagger.parameters['commentId'] = { description: 'Comment id' }
-    res.send('delete comment');
+
+    try {
+        // get comment id from request parameters
+        const commentId = new ObjectId(req.params.commentId);
+
+        // delete document from collection 
+        const result = await mongo.getConnection()
+            .db('flavor-hub')
+            .collection('comment')
+            .deleteOne({_id: commentId});
+        res.status(200).send(`{"responseMessage": "Comment record (${commentId}) was deleted successfully"}`);
+    } catch (error) {
+        res.status(502).send(`{"responseMessage": "Something went wrong when trying to delete comment ${commentId}: ${error}"}`);
+    }
+
+
 }
 
 module.exports = {
