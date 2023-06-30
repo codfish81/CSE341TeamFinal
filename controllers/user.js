@@ -6,9 +6,14 @@ const createNewUser = async(req, res, next) => {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Create a new User'
     // #swagger.description = 'This request creates a new user'
-    // #swagger.parameters['firstname'] = { description: 'User Firstname' }
-    // #swagger.parameters['lastname'] = { description: 'User Lastname' }
-    // #swagger.parameters['email'] = { description: 'User Email' }
+  /*  #swagger.parameters['user'] = { 
+     in:'body', 
+     description: 'New User', 
+     required: true, 
+     schema: {
+       $firstName: 'any',
+       $lastName : 'any',
+       $email: 'any'}}*/
     try{
         const user = new User({
           firstName: req.body.firstName,

@@ -312,39 +312,31 @@
         "description": "This request creates a new user",
         "parameters": [
           {
-            "name": "firstname",
-            "description": "User Firstname",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "lastname",
-            "description": "User Lastname",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "email",
-            "description": "User Email",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "body",
+            "name": "user",
             "in": "body",
+            "description": "New User",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "firstName": {
+                  "type": "string",
                   "example": "any"
                 },
                 "lastName": {
+                  "type": "string",
                   "example": "any"
                 },
                 "email": {
+                  "type": "string",
                   "example": "any"
                 }
-              }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email"
+              ]
             }
           }
         ],
