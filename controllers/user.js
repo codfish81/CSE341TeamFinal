@@ -15,12 +15,9 @@ const createNewUser = async(req, res, next) => {
        $lastName : 'any',
        $email: 'any'}}*/
     try{
-        const user = new User({
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email
-        });
-        const response = await mongodb.getConnection().db('flavor-hub').collection('user').insertOne(user);
+        const {firstName, lastName, email} = req.body;
+        
+        const response = await mongodb.getConnection().db('flavor-hub').collection('user').insertOne({firstName, lastName, email});
         if (response.acknowledged) {
           res.status(201).json(response);
         } else {
