@@ -10,7 +10,27 @@ async function addRecipe(req, res, next) {
     //      description: 'Recipe updated successfully'
     // }
 
-}
+    try {
+        // Add recipe variables
+        const { title, description, ingredients, instructions, time, servingSize, dateAdded = Date() } = req.body;
+
+        // Insert recipe into database
+        const result = await mongo.getConnection().db('flavor-hub').collection('recipe').insertOne({
+            title,
+            description,
+            ingredients,
+            instructions,
+            time,
+            servingSize,
+            dateAdded,
+        });
+
+        res.status(201).json({ id: result.insertedId });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 async function updateRecipe(req, res, next) {
     // Update recipe by id
