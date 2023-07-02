@@ -12,62 +12,326 @@
     "https"
   ],
   "paths": {
-    "/users/{userId}": {
-      "get": {
+    "/recipe/": {
+      "post": {
         "tags": [
-          "Users"
+          "Recipes"
         ],
-        "summary": "Get user by User Id",
-        "description": "This will get a user by its Id",
+        "summary": "Add a new recipe",
+        "description": "This route allows you to create a new recipe.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "User id"
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "ingredients": {
+                  "example": "any"
+                },
+                "instructions": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "servingSize": {
+                  "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/recipe/updateRecipe/{recipeId}": {
       "put": {
         "tags": [
-          "Users"
+          "Recipes"
         ],
-        "summary": "Update user",
-        "description": "Updates a user by id",
+        "summary": "Update recipe by id",
+        "description": "This route allows you to update a recipe by its id.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "recipeId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "User ID."
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "ingredients": {
+                  "example": "any"
+                },
+                "instructions": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "servingSize": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/recipe/getRecipe/{recipeId}": {
+      "get": {
         "tags": [
-          "Users"
+          "Recipes"
         ],
-        "summary": "Delete user",
-        "description": "Delete user by Id",
+        "summary": "Get a recipe",
+        "description": "This route allows you to get a recipe by its id.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/getCategory/{categoryId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get all recipes of a category",
+        "description": "This route allows you to retrieve all recipes of a specific category.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/getKeyword/{keywordId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipes by keyword",
+        "description": "This route allows you to retrieve recipes by searching for a keyword.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "keywordId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/getUserRecipe/{userId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipes submitted by a user",
+        "description": "This route allows you to retrieve recipes submitted by a specific user.",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "User id"
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/deleteRecipe/{recipeId}": {
+      "delete": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Delete recipe by id",
+        "description": "This route allows you to delete a recipe by its id.",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/uploadImage/{recipeId}": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Add recipe image",
+        "description": "This route allows you to add an image to a recipe.",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -77,14 +341,21 @@
         }
       }
     },
-    "/users/": {
-      "post": {
+    "/recipe/deleteImage/{recipeId}": {
+      "delete": {
         "tags": [
-          "Users"
+          "Recipes"
         ],
-        "summary": "Create a new User",
-        "description": "This request creates a new user",
-        "parameters": [],
+        "summary": "Remove recipe image",
+        "description": "This route allows you to remove an image from a recipe.",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -209,7 +480,6 @@
         ],
         "summary": "Create a new Comment",
         "description": "This request creates a new comment",
-        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
