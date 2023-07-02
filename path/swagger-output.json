@@ -19,15 +19,7 @@
         ],
         "summary": "Add a new recipe",
         "description": "This route allows you to create a new recipe.",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -63,20 +55,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "201": {
             "description": "Created"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -88,19 +71,11 @@
         ],
         "summary": "Update recipe by id",
         "description": "This route allows you to update a recipe by its id.",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "recipeId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
             "type": "string"
           },
           {
@@ -140,9 +115,6 @@
           },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -154,19 +126,11 @@
         ],
         "summary": "Get a recipe",
         "description": "This route allows you to get a recipe by its id.",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "recipeId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
             "type": "string"
           }
         ],
@@ -202,19 +166,11 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -238,19 +194,11 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -270,11 +218,6 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
             "type": "string"
           }
         ],
@@ -335,8 +278,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -357,8 +300,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }

@@ -7,20 +7,7 @@ async function addRecipe(req, res, next) {
         // #swagger.tags = ['Recipes']
         // #swagger.summary = 'Add a new recipe'
         // #swagger.description = 'This route allows you to create a new recipe.'
-        // #swagger.parameters['recipeData'] = {
-        //      in: 'body',
-        //      description: 'Recipe data.',
-        //      required: true,
-        //      schema: {
-        //          $ref: '#/definitions/RecipeInput'
-        //      }
-        // }
-        // #swagger.responses[201] = {
-        //      description: 'Recipe added successfully',
-        //      schema: {
-        //          $ref: '#/definitions/RecipeId'
-        //      }
-        // }
+
         const { title, description, ingredients, instructions, time, servingSize, categoryId, userId } = req.body;
 
         // Data validation
@@ -53,23 +40,7 @@ async function updateRecipe(req, res, next) {
         // #swagger.tags = ['Recipes']
         // #swagger.summary = 'Update recipe by id'
         // #swagger.description = 'This route allows you to update a recipe by its id.'
-        // #swagger.parameters['recipeId'] = {
-        //      description: 'Recipe ID.',
-        //      in: 'path',
-        //      required: true,
-        //      type: 'string'
-        // }
-        // #swagger.parameters['recipeData'] = {
-        //      in: 'body',
-        //      description: 'Recipe data.',
-        //      required: true,
-        //      schema: {
-        //          $ref: '#/definitions/RecipeUpdateInput'
-        //      }
-        // }
-        // #swagger.responses[200] = {
-        //      description: 'Recipe updated successfully'
-        // }
+
         const recipeId = new ObjectId(req.params.recipeId);
         const { title, description, ingredients, instructions, time, servingSize } = req.body;
 
@@ -109,9 +80,7 @@ async function getRecipe(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Get a recipe'
     // #swagger.description = 'This route allows you to get a recipe by its id.'
-    // #swagger.responses[200] = {
-    //      description: 'Recipe retrieved successfully'
-    // }
+
     try {
         const recipeId = new ObjectId(req.params.recipeId);
 
@@ -138,15 +107,7 @@ async function getRecipesByCategory(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Get all recipes of a category'
     // #swagger.description = 'This route allows you to retrieve all recipes of a specific category.'
-    // #swagger.parameters['category'] = {
-    //      in: 'query',
-    //      description: 'Category',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Recipes found'
-    // }
+
     try {
         await mongo
             .getConnection()
@@ -172,15 +133,7 @@ async function getRecipesByKeyword(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Get recipes by keyword'
     // #swagger.description = 'This route allows you to retrieve recipes by searching for a keyword.'
-    // #swagger.parameters['keyword'] = {
-    //      in: 'query',
-    //      description: 'Keyword',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Recipes found'
-    // }
+
     try {
         await mongo
             .getConnection()
@@ -206,35 +159,31 @@ async function getRecipesByUser(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Get recipes submitted by a user'
     // #swagger.description = 'This route allows you to retrieve recipes submitted by a specific user.'
-    // #swagger.parameters['userId'] = {
-    //      in: 'query',
-    //      description: 'User ID',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Recipes found'
-    // }
 
     try {
-        const userId = req.query.userId;
-
+        const userId = req.params.userId;
+      
+        // Execute the database query
         const recipes = await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('recipe')
-            .find({ userId: { $eq: userId } }) // Update the query to search for the userId field
-            .toArray();
-
+          .getConnection()
+          .db('flavor-hub')
+          .collection('recipe')
+          .find({ userId: userId })
+          .toArray();
+      
+        // Check if any recipes were found
         if (recipes.length > 0) {
-            res.status(200).json(recipes);
+          // Respond with the found recipes
+          return res.status(200).json(recipes);
         } else {
-            res.status(404).json({ message: 'No recipes found for the specified userId' });
+          // No recipes found for the specified userId
+          return res.status(404).json({ message: 'No recipes found for the specified userId' });
         }
-    } catch (error) {
+      } catch (error) {
+        // Handle any caught errors
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
-    }
+        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      }
 }
 
 // Delete recipe by id
@@ -266,34 +215,20 @@ async function deleteRecipe(req, res, next) {
     }
 }
 
-async function addRecipeImage(req, res, next) {
     // Add recipe image
+async function addRecipeImage(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Add recipe image'
     // #swagger.description = 'This route allows you to add an image to a recipe.'
-    // #swagger.parameters['recipeId'] = {
-    //      description: 'Recipe ID.',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Image added successfully'
-    // }
+
 }
 
-async function removeRecipeImage(req, res, next) {
     // Remove recipe image
+async function removeRecipeImage(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Remove recipe image'
     // #swagger.description = 'This route allows you to remove an image from a recipe.'
-    // #swagger.parameters['recipeId'] = {
-    //      description: 'Recipe ID.',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Image deleted successfully'
-    // }
+
 }
 
 module.exports = {
