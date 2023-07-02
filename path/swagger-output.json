@@ -363,6 +363,133 @@
         }
       }
     },
+    "/modifications/": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/{modId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/mod/{userId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/mod/{recipeTypeId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeTypeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/comments/{commentId}": {
       "get": {
         "tags": [
@@ -370,6 +497,9 @@
         ],
         "summary": "Get Comment by Comment Id",
         "description": "This will get a comment by its Id",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "commentId",
@@ -398,11 +528,29 @@
             "required": true,
             "type": "string",
             "description": "Comment ID."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "501": {
+            "description": "Not Implemented"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       },
@@ -424,6 +572,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }
@@ -435,6 +586,9 @@
         ],
         "summary": "Get comments by User",
         "description": "This will all comments by a certain user",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -458,6 +612,9 @@
         ],
         "summary": "Get Comments by Recipe",
         "description": "This will get all comments by a certain recipe",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "recipeId",
@@ -480,9 +637,42 @@
         ],
         "summary": "Create a new Comment",
         "description": "This request creates a new comment",
+        "parameters": [
+          {
+            "name": "comment",
+            "in": "body",
+            "description": "Comment object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "6497d5d064035756f4d29abc"
+                },
+                "recipeId": {
+                  "type": "string",
+                  "example": "6497d5d064035756f481def5"
+                },
+                "text": {
+                  "type": "string",
+                  "example": "I really like this recipe, but..."
+                }
+              },
+              "required": [
+                "userId",
+                "recipeId",
+                "text"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
