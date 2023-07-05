@@ -14,7 +14,7 @@ router.get('/getRecipe/:recipeId', getRecipe);
 // Get all recipes of a category
 router.get('/getCategory/:categoryId', getRecipesByCategory);
 
-// Get recipes by keyword anywhere
+// Get recipes by searching a keyword
 router.get('/getKeyword/:searchKey', getRecipesByKeyword);
 
 // Get recipes submitted by a user
