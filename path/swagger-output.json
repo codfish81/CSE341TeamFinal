@@ -17,8 +17,8 @@
         "tags": [
           "Recipes"
         ],
-        "summary": "Update recipe by id",
-        "description": "This route allows you to update a recipe by its id.",
+        "summary": "Add a new recipe",
+        "description": "This route allows you to create a new recipe.",
         "parameters": [
           {
             "name": "body",
@@ -44,7 +44,10 @@
                 "servingSize": {
                   "example": "any"
                 },
-                "dateAdded": {
+                "categoryId": {
+                  "example": "any"
+                },
+                "userId": {
                   "example": "any"
                 }
               }
@@ -54,11 +57,14 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
     },
-    "/recipe/{recipeId}": {
+    "/recipe/updateRecipe/{recipeId}": {
       "put": {
         "tags": [
           "Recipes"
@@ -71,62 +77,89 @@
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipe by id",
-        "description": "This route allows you to retrieve a recipe by its id.",
-        "parameters": [
+          },
           {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "ingredients": {
+                  "example": "any"
+                },
+                "instructions": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "servingSize": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Delete recipe by id",
-        "description": "This route allows you to delete a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
-    "/recipe/{categoryId}": {
+    "/recipe/getRecipe/{recipeId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get a recipe",
+        "description": "This route allows you to get a recipe by its id.",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/getCategory/{categoryId}": {
       "get": {
         "tags": [
           "Recipes"
         ],
         "summary": "Get all recipes of a category",
         "description": "This route allows you to retrieve all recipes of a specific category.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "categoryId",
@@ -138,17 +171,23 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/recipe/{keywordId}": {
+    "/recipe/getKeyword/{keywordId}": {
       "get": {
         "tags": [
           "Recipes"
         ],
-        "summary": "Get recipes by keyword anywhere",
+        "summary": "Get recipes by keyword",
         "description": "This route allows you to retrieve recipes by searching for a keyword.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "keywordId",
@@ -160,11 +199,14 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/recipe/{userId}": {
+    "/recipe/getUserRecipe/{userId}": {
       "get": {
         "tags": [
           "Recipes"
@@ -182,11 +224,45 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/recipe/{recipeId}/uploadImage": {
+    "/recipe/deleteRecipe/{recipeId}": {
+      "delete": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Delete recipe by id",
+        "description": "This route allows you to delete a recipe by its id.",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/uploadImage/{recipeId}": {
       "post": {
         "tags": [
           "Recipes"
@@ -202,13 +278,13 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/recipe/{recipeId}/deleteImage": {
+    "/recipe/deleteImage/{recipeId}": {
       "delete": {
         "tags": [
           "Recipes"
@@ -224,88 +300,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/{userId}": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Get user by User Id",
-        "description": "This will get a user by its Id",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "User id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Update user",
-        "description": "Updates a user by id",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "User ID."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Delete user",
-        "description": "Delete user by Id",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "User id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Create a new User",
-        "description": "This request creates a new user",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
