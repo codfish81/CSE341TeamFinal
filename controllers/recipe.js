@@ -8,11 +8,20 @@ async function addRecipe(req, res, next) {
         // #swagger.summary = 'Add a new recipe'
         // #swagger.description = 'This route allows you to create a new recipe.'
 
-        const { title, description, ingredients, instructions, time, servingSize, categoryId, userId } = req.body;
+        const {
+            title,
+            description,
+            ingredients,
+            instructions,
+            time,
+            servingSize,
+            categoryId,
+            dateAdded,
+            userId } = req.body;
 
         // Data validation
         if (!title || !description || !ingredients) {
-            return res.status(400).json({ message: 'All fields are required' });
+            return res.status(400).json({ message: 'A required field is missing' });
         }
 
         // Insert recipe into database
@@ -42,12 +51,16 @@ async function updateRecipe(req, res, next) {
         // #swagger.description = 'This route allows you to update a recipe by its id.'
 
         const recipeId = new ObjectId(req.params.recipeId);
-        const { title, description, ingredients, instructions, time, servingSize } = req.body;
 
-        // Data validation
-        if (!title || !description || !ingredients) {
-            return res.status(400).json({ message: 'A required field is missing' });
-        }
+        const {
+            title,
+            description,
+            ingredients,
+            instructions,
+            time,
+            servingSize,
+            categoryId,
+            dateChanged } = req.body;
 
         // Update recipe in the database
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').updateOne(
@@ -60,6 +73,7 @@ async function updateRecipe(req, res, next) {
                     instructions,
                     time,
                     servingSize,
+                    categoryId,
                     dateChanged: new Date(),
                 },
             }
@@ -109,15 +123,21 @@ async function getRecipesByCategory(req, res, next) {
     // #swagger.description = 'This route allows you to retrieve all recipes of a specific category.'
 
     try {
-        await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('recipe')
-            .createIndex({ categoryId: 'text' });
+        const collection = mongo.getConnection().db('flavor-hub').collection('recipe');
+
+        // Check if the index exists
+        const indexInfo = await collection.indexInformation();
+        if(Object.keys(indexInfo).length > 1) {
+            // Remove old index
+            await collection.dropIndexes();
+        }
+
+        // Create a new index
+        await collection.createIndex({ categoryId: 'text' });
 
         const searchWord = req.params.categoryId;
-
-        const recipes = await mongo.getConnection().db('flavor-hub').collection('recipe').find({ $text: { $search: searchWord } }).toArray();
+console.log(searchWord)
+        const recipes = await collection.find({ $text: { $search: searchWord } }).toArray();
 
         res.setHeader('Content-Type', 'application/json');
         res.status(200).send(JSON.stringify(recipes, null, 2));
@@ -135,15 +155,21 @@ async function getRecipesByKeyword(req, res, next) {
     // #swagger.description = 'This route allows you to retrieve recipes by searching for a keyword.'
 
     try {
-        await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('recipe')
-            .createIndex({ title: 'text', description: 'text', ingredients: 'text', instructions: 'text' });
+        const collection = mongo.getConnection().db('flavor-hub').collection('recipe');
 
-        const searchWord = req.params.keywordId;
+        // Check if the index exists
+        const indexInfo = await collection.indexInformation();
+        if(Object.keys(indexInfo).length > 1) {
+            // Remove old index
+            await collection.dropIndexes();
+        }
 
-        const recipes = await mongo.getConnection().db('flavor-hub').collection('recipe').find({ $text: { $search: searchWord } }).toArray();
+        // Create a new index
+        await collection.createIndex({ title: 'text', description: 'text', ingredients: 'text', instructions: 'text' });
+
+        const searchWord = req.params.searchKey;
+
+        const recipes = await collection.find({ $text: { $search: searchWord } }).toArray();
 
         res.setHeader('Content-Type', 'application/json');
         res.status(200).send(JSON.stringify(recipes, null, 2));
@@ -162,28 +188,28 @@ async function getRecipesByUser(req, res, next) {
 
     try {
         const userId = req.params.userId;
-      
+
         // Execute the database query
         const recipes = await mongo
-          .getConnection()
-          .db('flavor-hub')
-          .collection('recipe')
-          .find({ userId: userId })
-          .toArray();
-      
+            .getConnection()
+            .db('flavor-hub')
+            .collection('recipe')
+            .find({ userId: userId })
+            .toArray();
+
         // Check if any recipes were found
         if (recipes.length > 0) {
-          // Respond with the found recipes
-          return res.status(200).json(recipes);
+            // Respond with the found recipes
+            return res.status(200).json(recipes);
         } else {
-          // No recipes found for the specified userId
-          return res.status(404).json({ message: 'No recipes found for the specified userId' });
+            // No recipes found for the specified userId
+            return res.status(404).json({ message: 'No recipes found for the specified userId' });
         }
-      } catch (error) {
+    } catch (error) {
         // Handle any caught errors
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
-      }
+    }
 }
 
 // Delete recipe by id
@@ -215,7 +241,7 @@ async function deleteRecipe(req, res, next) {
     }
 }
 
-    // Add recipe image
+// Add recipe image
 async function addRecipeImage(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Add recipe image'
@@ -223,7 +249,7 @@ async function addRecipeImage(req, res, next) {
 
 }
 
-    // Remove recipe image
+// Remove recipe image
 async function removeRecipeImage(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Remove recipe image'
