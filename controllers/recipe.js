@@ -136,7 +136,7 @@ async function getRecipesByCategory(req, res, next) {
         await collection.createIndex({ categoryId: 'text' });
 
         const searchWord = req.params.categoryId;
-console.log(searchWord)
+
         const recipes = await collection.find({ $text: { $search: searchWord } }).toArray();
 
         res.setHeader('Content-Type', 'application/json');

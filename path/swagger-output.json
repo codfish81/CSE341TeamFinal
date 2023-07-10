@@ -47,6 +47,9 @@
                 "categoryId": {
                   "example": "any"
                 },
+                "dateAdded": {
+                  "example": "any"
+                },
                 "userId": {
                   "example": "any"
                 }
@@ -101,6 +104,12 @@
                 },
                 "servingSize": {
                   "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "dateChanged": {
+                  "example": "any"
                 }
               }
             }
@@ -109,9 +118,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
@@ -178,7 +184,7 @@
         }
       }
     },
-    "/recipe/getKeyword/{keywordId}": {
+    "/recipe/getKeyword/{searchKey}": {
       "get": {
         "tags": [
           "Recipes"
@@ -190,7 +196,7 @@
         ],
         "parameters": [
           {
-            "name": "keywordId",
+            "name": "searchKey",
             "in": "path",
             "required": true,
             "type": "string"
@@ -306,13 +312,91 @@
         }
       }
     },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by User Id",
+        "description": "This will get a user by its Id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user",
+        "description": "Updates a user by id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user",
+        "description": "Delete user by Id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new User",
+        "description": "This request creates a new user",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/modifications/": {
       "get": {
         "tags": [
           "Modifications"
         ],
         "description": "",
-        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -324,7 +408,6 @@
           "Modifications"
         ],
         "description": "",
-        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
