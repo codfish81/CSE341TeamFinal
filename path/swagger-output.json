@@ -12,58 +12,6 @@
     "https"
   ],
   "paths": {
-    "/recipe/": {
-      "post": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Add a new recipe",
-        "description": "This route allows you to create a new recipe.",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "ingredients": {
-                  "example": "any"
-                },
-                "instructions": {
-                  "example": "any"
-                },
-                "time": {
-                  "example": "any"
-                },
-                "servingSize": {
-                  "example": "any"
-                },
-                "categoryId": {
-                  "example": "any"
-                },
-                "userId": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
     "/recipe/updateRecipe/{recipeId}": {
       "put": {
         "tags": [
@@ -101,6 +49,12 @@
                 },
                 "servingSize": {
                   "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "dateChanged": {
+                  "example": "any"
                 }
               }
             }
@@ -109,9 +63,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
@@ -178,7 +129,7 @@
         }
       }
     },
-    "/recipe/getKeyword/{keywordId}": {
+    "/recipe/getKeyword/{searchKey}": {
       "get": {
         "tags": [
           "Recipes"
@@ -190,7 +141,7 @@
         ],
         "parameters": [
           {
-            "name": "keywordId",
+            "name": "searchKey",
             "in": "path",
             "required": true,
             "type": "string"
@@ -306,44 +257,23 @@
         }
       }
     },
-    "/modifications/": {
+    "/users/{userId}": {
       "get": {
         "tags": [
-          "Modifications"
+          "Users"
         ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Modifications"
+        "summary": "Get user by User Id",
+        "description": "This will get a user by its Id",
+        "produces": [
+          "application/json"
         ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/modifications/{modId}": {
-      "get": {
-        "tags": [
-          "Modifications"
-        ],
-        "description": "",
         "parameters": [
           {
-            "name": "modId",
+            "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User id"
           }
         ],
         "responses": {
@@ -360,12 +290,13 @@
       },
       "put": {
         "tags": [
-          "Modifications"
+          "Users"
         ],
-        "description": "",
+        "summary": "Update user",
+        "description": "Updates a user by id",
         "parameters": [
           {
-            "name": "modId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "type": "string",
@@ -404,15 +335,17 @@
       },
       "delete": {
         "tags": [
-          "Modifications"
+          "Users"
         ],
-        "description": "",
+        "summary": "Delete user",
+        "description": "Delete user by Id",
         "parameters": [
           {
-            "name": "modId",
+            "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User id"
           }
         ],
         "responses": {
@@ -428,40 +361,10 @@
         }
       }
     },
-    "/modifications/mod/{userId}": {
-      "get": {
+    "/users/": {
+      "post": {
         "tags": [
-          "Modifications"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/modifications/mod/{recipeTypeId}": {
-      "get": {
-        "tags": [
-          "Modifications"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "recipeTypeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          "Users"
         ],
         "summary": "Create a new User",
         "description": "This request creates a new user",
@@ -501,6 +404,131 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/modifications/": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/{modId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "modId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/mod/{userId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/modifications/mod/{recipeTypeId}": {
+      "get": {
+        "tags": [
+          "Modifications"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeTypeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -620,7 +648,7 @@
         }
       }
     },
-    "/comments/recipes/{recipeId}": {
+    "/comments/recipe/{recipeId}": {
       "get": {
         "tags": [
           "Comments"
