@@ -3,7 +3,7 @@ const commentsController = require('../controllers/comment')
 
 router.get('/:commentId', commentsController.getCommentByCommentId);
 router.get('/users/:userId', commentsController.getCommentsByUserId);
-router.get('/recipes/:recipeId', commentsController.getCommentsByRecipeId);
+router.get('/recipe/:recipeId', commentsController.getCommentsByRecipeId);
 
 router.post('/', commentsController.createNewComment);
 

@@ -12,23 +12,11 @@
     "https"
   ],
   "paths": {
-<<<<<<< HEAD
-    "/recipes/": {
-=======
     "/recipe/": {
->>>>>>> origin/main
       "post": {
         "tags": [
           "Recipes"
         ],
-<<<<<<< HEAD
-        "summary": "Update recipe by id",
-        "description": "This route allows you to update a recipe by its id.",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-=======
         "summary": "Add a new recipe",
         "description": "This route allows you to create a new recipe.",
         "parameters": [
@@ -72,16 +60,11 @@
           },
           "400": {
             "description": "Bad Request"
->>>>>>> origin/main
           }
         }
       }
     },
-<<<<<<< HEAD
-    "/recipes/{recipeId}": {
-=======
     "/recipe/updateRecipe/{recipeId}": {
->>>>>>> origin/main
       "put": {
         "tags": [
           "Recipes"
@@ -94,48 +77,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-<<<<<<< HEAD
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipe by id",
-        "description": "This route allows you to retrieve a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Delete recipe by id",
-        "description": "This route allows you to delete a recipe by its id.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-=======
           },
           {
             "name": "body",
@@ -163,151 +104,26 @@
                 }
               }
             }
->>>>>>> origin/main
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-<<<<<<< HEAD
-=======
           },
           "400": {
             "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
->>>>>>> origin/main
           }
         }
       }
     },
-<<<<<<< HEAD
-    "/recipes/{categoryId}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get all recipes of a category",
-        "description": "This route allows you to retrieve all recipes of a specific category.",
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipes/{keywordId}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipes by keyword anywhere",
-        "description": "This route allows you to retrieve recipes by searching for a keyword.",
-        "parameters": [
-          {
-            "name": "keywordId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipes/{userId}": {
-      "get": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Get recipes submitted by a user",
-        "description": "This route allows you to retrieve recipes submitted by a specific user.",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipes/{recipeId}/uploadImage": {
-      "post": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Add recipe image",
-        "description": "This route allows you to add an image to a recipe.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/recipes/{recipeId}/deleteImage": {
-      "delete": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Remove recipe image",
-        "description": "This route allows you to remove an image from a recipe.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/{userId}": {
-=======
     "/recipe/getRecipe/{recipeId}": {
->>>>>>> origin/main
       "get": {
         "tags": [
           "Recipes"
         ],
-<<<<<<< HEAD
-        "summary": "Get user by User Id",
-        "description": "This will get a user by its Id",
-        "produces": [
-          "application/json"
-        ],
-=======
         "summary": "Get a recipe",
         "description": "This route allows you to get a recipe by its id.",
         "parameters": [
@@ -397,7 +213,6 @@
         ],
         "summary": "Get recipes submitted by a user",
         "description": "This route allows you to retrieve recipes submitted by a specific user.",
->>>>>>> origin/main
         "parameters": [
           {
             "name": "userId",
@@ -553,7 +368,6 @@
             "name": "modId",
             "in": "path",
             "required": true,
-<<<<<<< HEAD
             "type": "string",
             "description": "User ID."
           },
@@ -574,9 +388,6 @@
                 }
               }
             }
-=======
-            "type": "string"
->>>>>>> origin/main
           }
         ],
         "responses": {
@@ -652,7 +463,6 @@
             "type": "string"
           }
         ],
-<<<<<<< HEAD
         "summary": "Create a new User",
         "description": "This request creates a new user",
         "parameters": [
@@ -685,8 +495,6 @@
             }
           }
         ],
-=======
->>>>>>> origin/main
         "responses": {
           "201": {
             "description": "Created"
