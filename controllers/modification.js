@@ -1,6 +1,3 @@
-const mongo = require('../db/connect');
-const ObjectId = require('mongodb').ObjectId;
-
 async function getAllMod(req, res, next)
 {
     // #swagger.tags = ['Modifications']

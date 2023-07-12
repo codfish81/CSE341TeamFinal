@@ -24,7 +24,7 @@ router.get('/logout', logout);
 
 // Redirect to user dashboard after logging in
 router.get('/dashboard', ensureAuth, (req, res) => {
-  res.sendFile('dashboard.html', { root: './' });
+  res.sendFile('/frontEnd/dashboard.html', { root: './' });
 });
 
 module.exports = router;
