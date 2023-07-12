@@ -3,7 +3,6 @@ const passport = require('passport');
 // Check authentication
 const ensureAuth = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log(req.isAuthenticated())
     return next();
   } else {
     res.redirect('/');
