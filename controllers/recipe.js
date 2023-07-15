@@ -308,5 +308,3 @@ module.exports = {
     getRecipesByUser,
     deleteRecipe
 }
-
-
