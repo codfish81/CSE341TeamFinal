@@ -18,7 +18,7 @@ const ensureGuest = (req, res, next) => {
 };
 
 // Authenticate with Google
-const authenticateWithGoogle = passport.authenticate('google', { scope: ['profile'], prompt: 'select_account'  });
+const authenticateWithGoogle = passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account'  });
 
 // Google authentication callback
 const googleCallback = (req, res, next) => {

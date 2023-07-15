@@ -7,7 +7,7 @@ router.use('/comments', require('./comment'));
 router.use('/auth', require('./authentication'));
 
 router.get('/', (req, res) => {
-    res.sendFile('/frontEnd/login.html', { root: './' });
+    res.sendFile('/public/login.html', { root: './' });
   });
 
 module.exports = router;

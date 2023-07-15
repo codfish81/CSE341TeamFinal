@@ -1,5 +1,6 @@
 const mongo = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
+const { param, validationResult } = require('express-validator');
 
 // Add a recipe
 async function addRecipe(req, res, next) {
@@ -7,6 +8,19 @@ async function addRecipe(req, res, next) {
         // #swagger.tags = ['Recipes']
         // #swagger.summary = 'Add a new recipe'
         // #swagger.description = 'This route allows you to create a new recipe.'
+
+        // Validation rules
+        await Promise.all([
+            body('title').notEmpty().withMessage('Title is required'),
+            body('description').notEmpty().withMessage('Description is required'),
+            body('ingredients').notEmpty().withMessage('Ingredients are required'),
+        ]).map((validation) => validation.run(req));
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
         const {
             title,
@@ -17,12 +31,8 @@ async function addRecipe(req, res, next) {
             servingSize,
             categoryId,
             dateAdded,
-            userId } = req.body;
-
-        // Data validation
-        if (!title || !description || !ingredients) {
-            return res.status(400).json({ message: 'A required field is missing' });
-        }
+            userId
+        } = req.body;
 
         // Insert recipe into database
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').insertOne({
@@ -52,6 +62,19 @@ async function updateRecipe(req, res, next) {
 
         const recipeId = new ObjectId(req.params.recipeId);
 
+        // Validation rules
+        await Promise.all([
+            body('title').notEmpty().withMessage('Title is required'),
+            body('description').notEmpty().withMessage('Description is required'),
+            body('ingredients').notEmpty().withMessage('Ingredients are required'),
+        ]).map((validation) => validation.run(req));
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const {
             title,
             description,
@@ -60,7 +83,8 @@ async function updateRecipe(req, res, next) {
             time,
             servingSize,
             categoryId,
-            dateChanged } = req.body;
+            dateChanged
+        } = req.body;
 
         // Update recipe in the database
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').updateOne(
@@ -88,19 +112,24 @@ async function updateRecipe(req, res, next) {
     }
 }
 
+
 // Get recipe by id
 async function getRecipe(req, res, next) {
-
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Get a recipe'
-    // #swagger.description = 'This route allows you to get a recipe by its id.'
-
     try {
-        const recipeId = new ObjectId(req.params.recipeId);
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Get a recipe'
+        // #swagger.description = 'This route allows you to get a recipe by its id.'
 
-        if (!ObjectId.isValid(recipeId)) {
-            return res.status(400).json({ message: 'Invalid recipe ID' });
+        // Validation rules
+        await param('recipeId').isMongoId().withMessage('Invalid recipe ID').run(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
+
+        const recipeId = new ObjectId(req.params.recipeId);
 
         const recipe = await mongo.getConnection().db('flavor-hub').collection('recipe').findOne({ _id: recipeId });
 
@@ -113,21 +142,29 @@ async function getRecipe(req, res, next) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-};
+}
 
 // Get all recipes by categoryId
 async function getRecipesByCategory(req, res, next) {
-
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Get all recipes of a category'
-    // #swagger.description = 'This route allows you to retrieve all recipes of a specific category.'
-
     try {
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Get all recipes of a category'
+        // #swagger.description = 'This route allows you to retrieve all recipes of a specific category.'
+
+        // Validation rules
+        await param('categoryId').notEmpty().withMessage('Category ID is required').run(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const collection = mongo.getConnection().db('flavor-hub').collection('recipe');
 
         // Check if the index exists
         const indexInfo = await collection.indexInformation();
-        if(Object.keys(indexInfo).length > 1) {
+        if (Object.keys(indexInfo).length > 1) {
             // Remove old index
             await collection.dropIndexes();
         }
@@ -149,17 +186,25 @@ async function getRecipesByCategory(req, res, next) {
 
 // Get recipes by keyword
 async function getRecipesByKeyword(req, res, next) {
-
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Get recipes by keyword'
-    // #swagger.description = 'This route allows you to retrieve recipes by searching for a keyword.'
-
     try {
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Get recipes by keyword'
+        // #swagger.description = 'This route allows you to retrieve recipes by searching for a keyword.'
+
+        // Validation rules
+        await param('searchKey').notEmpty().withMessage('Search key is required').run(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const collection = mongo.getConnection().db('flavor-hub').collection('recipe');
 
         // Check if the index exists
         const indexInfo = await collection.indexInformation();
-        if(Object.keys(indexInfo).length > 1) {
+        if (Object.keys(indexInfo).length > 1) {
             // Remove old index
             await collection.dropIndexes();
         }
@@ -181,12 +226,20 @@ async function getRecipesByKeyword(req, res, next) {
 
 // Get recipes by userId
 async function getRecipesByUser(req, res, next) {
-
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Get recipes submitted by a user'
-    // #swagger.description = 'This route allows you to retrieve recipes submitted by a specific user.'
-
     try {
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Get recipes submitted by a user'
+        // #swagger.description = 'This route allows you to retrieve recipes submitted by a specific user.'
+
+        // Validation rules
+        await param('userId').notEmpty().withMessage('User ID is required').run(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const userId = req.params.userId;
 
         // Execute the database query
@@ -214,20 +267,27 @@ async function getRecipesByUser(req, res, next) {
 
 // Delete recipe by id
 async function deleteRecipe(req, res, next) {
-
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Delete recipe by id'
-    // #swagger.description = 'This route allows you to delete a recipe by its id.'
-    // #swagger.parameters['recipeId'] = {
-    //      description: 'Recipe ID.',
-    //      required: true,
-    //      type: 'string'
-    // }
-    // #swagger.responses[200] = {
-    //      description: 'Recipe deleted successfully'
-    // }
     try {
-        const recipeId = new ObjectId(req.params.recipeId);
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Delete recipe by id'
+        // #swagger.description = 'This route allows you to delete a recipe by its id.'
+        // #swagger.parameters['recipeId'] = {
+        //      description: 'Recipe ID.',
+        //      required: true,
+        //      type: 'string'
+        // }
+
+        const recipeId = req.params.recipeId;
+
+        // Validation rules
+        await validationResult(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').deleteOne({ _id: recipeId });
 
         if (result.deletedCount === 1) {
@@ -241,22 +301,6 @@ async function deleteRecipe(req, res, next) {
     }
 }
 
-// Add recipe image
-async function addRecipeImage(req, res, next) {
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Add recipe image'
-    // #swagger.description = 'This route allows you to add an image to a recipe.'
-
-}
-
-// Remove recipe image
-async function removeRecipeImage(req, res, next) {
-    // #swagger.tags = ['Recipes']
-    // #swagger.summary = 'Remove recipe image'
-    // #swagger.description = 'This route allows you to remove an image from a recipe.'
-
-}
-
 module.exports = {
     addRecipe,
     updateRecipe,
@@ -264,9 +308,7 @@ module.exports = {
     getRecipesByCategory,
     getRecipesByKeyword,
     getRecipesByUser,
-    deleteRecipe,
-    addRecipeImage,
-    removeRecipeImage
+    deleteRecipe
 }
 
 

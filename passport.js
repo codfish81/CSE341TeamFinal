@@ -9,6 +9,7 @@ module.exports = function (passport) {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.SECRET,
         callbackURL: '/auth/google/callback',
+        profileFields: ['emails']
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -16,7 +17,7 @@ module.exports = function (passport) {
           const existingUser = await mongo
             .getConnection()
             .db('flavor-hub')
-            .collection('users')
+            .collection('user')
             .findOne({ googleId: profile.id });
 
           if (existingUser) {
@@ -29,20 +30,21 @@ module.exports = function (passport) {
               displayName: profile.displayName,
               firstName: profile.name.givenName,
               lastName: profile.name.familyName,
+              email: profile.emails[0].value
             };
 
             // Insert the new user into the database
             const result = await mongo
               .getConnection()
               .db('flavor-hub')
-              .collection('users')
+              .collection('user')
               .insertOne(newUser);
 
             if (result.acknowledged) {
               const user = await mongo
                 .getConnection()
                 .db('flavor-hub')
-                .collection('users')
+                .collection('user')
                 .findOne({ _id: result.insertedId });
               done(null, user);
             } else {
@@ -66,7 +68,7 @@ module.exports = function (passport) {
   passport.deserializeUser(async function (id, done) {
     try {
       const db = mongo.getConnection().db('flavor-hub');
-      const usersCollection = db.collection('users');
+      const usersCollection = db.collection('user');
       if (!usersCollection) {
         return done('User collection not found');
       }
