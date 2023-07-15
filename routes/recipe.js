@@ -23,10 +23,4 @@ router.get('/getUserRecipe/:userId', getRecipesByUser);
 // Delete recipe by id
 router.delete('/deleteRecipe/:recipeId', deleteRecipe);
 
-// Add recipe image
-router.post('/uploadImage/:recipeId', addRecipeImage);
-
-// Delete recipe image
-router.delete('/deleteImage/:recipeId', removeRecipeImage);
-
 module.exports = router;

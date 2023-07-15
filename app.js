@@ -22,12 +22,6 @@ app.use(
   })
 );
 
-// Add the middleware function to log incoming requests
-app.use((req, res, next) => {
-    console.log('Incoming request:', req.method, req.url);
-    next();
-  });
-
 // Passport
 require('./passport')(passport);
 app.use(passport.initialize());

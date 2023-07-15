@@ -1,6 +1,7 @@
 const mongo = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
 const { param, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 
 // Add a recipe
 async function addRecipe(req, res, next) {
@@ -9,14 +10,13 @@ async function addRecipe(req, res, next) {
         // #swagger.summary = 'Add a new recipe'
         // #swagger.description = 'This route allows you to create a new recipe.'
 
-        // Validation rules
         await Promise.all([
-            body('title').notEmpty().withMessage('Title is required'),
-            body('description').notEmpty().withMessage('Description is required'),
-            body('ingredients').notEmpty().withMessage('Ingredients are required'),
-        ]).map((validation) => validation.run(req));
+            body('title').notEmpty().withMessage('Title is required').run(req),
+            body('description').notEmpty().withMessage('Description is required').run(req),
+            body('ingredients').notEmpty().withMessage('Ingredients are required').run(req),
+            body('instructions').notEmpty().withMessage('Instructions are required').run(req),
+        ]);
 
-        // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
@@ -34,7 +34,6 @@ async function addRecipe(req, res, next) {
             userId
         } = req.body;
 
-        // Insert recipe into database
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').insertOne({
             title,
             description,
@@ -53,27 +52,25 @@ async function addRecipe(req, res, next) {
     }
 }
 
+
 // Update recipe by id
 async function updateRecipe(req, res, next) {
     try {
-        // #swagger.tags = ['Recipes']
-        // #swagger.summary = 'Update recipe by id'
-        // #swagger.description = 'This route allows you to update a recipe by its id.'
-
-        const recipeId = new ObjectId(req.params.recipeId);
 
         // Validation rules
         await Promise.all([
-            body('title').notEmpty().withMessage('Title is required'),
-            body('description').notEmpty().withMessage('Description is required'),
-            body('ingredients').notEmpty().withMessage('Ingredients are required'),
-        ]).map((validation) => validation.run(req));
-
-        // Check for validation errors
+            body('title').trim().isLength({ min: 2 }).withMessage('Title is required').run(req),
+            body('description').trim().isLength({ min: 2 }).withMessage('Description is required').run(req),
+            body('ingredients').trim().isLength({ min: 2 }).withMessage('Ingredients are required').run(req),
+        ]);
+        
         const errors = validationResult(req);
+        
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
+
+        const recipeId = new ObjectId(req.params.recipeId);
 
         const {
             title,
@@ -85,7 +82,6 @@ async function updateRecipe(req, res, next) {
             categoryId,
             dateChanged
         } = req.body;
-
         // Update recipe in the database
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').updateOne(
             { _id: recipeId },
@@ -112,13 +108,13 @@ async function updateRecipe(req, res, next) {
     }
 }
 
-
 // Get recipe by id
 async function getRecipe(req, res, next) {
     try {
-        // #swagger.tags = ['Recipes']
-        // #swagger.summary = 'Get a recipe'
-        // #swagger.description = 'This route allows you to get a recipe by its id.'
+        // Check if recipeId parameter is present
+        if (!req.params.recipeId) {
+            return res.status(400).json({ message: 'Missing recipeId parameter' });
+        }
 
         // Validation rules
         await param('recipeId').isMongoId().withMessage('Invalid recipe ID').run(req);
@@ -133,16 +129,18 @@ async function getRecipe(req, res, next) {
 
         const recipe = await mongo.getConnection().db('flavor-hub').collection('recipe').findOne({ _id: recipeId });
 
-        if (recipe) {
-            res.status(200).json(recipe);
-        } else {
-            res.status(404).json({ message: 'Recipe not found' });
+        // Check if recipe exists
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
         }
+
+        res.status(200).json(recipe);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 }
+
 
 // Get all recipes by categoryId
 async function getRecipesByCategory(req, res, next) {
