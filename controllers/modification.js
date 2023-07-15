@@ -16,6 +16,7 @@ async function getAllMod(req, res, next)
         {
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(lists);
+            return true;
         });
     }
     catch(error)
