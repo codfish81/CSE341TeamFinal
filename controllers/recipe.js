@@ -55,8 +55,11 @@ async function addRecipe(req, res, next) {
 
 // Update recipe by id
 async function updateRecipe(req, res, next) {
-    try {
+        // #swagger.tags = ['Recipes']
+        // #swagger.summary = 'Update recipe by id'
+        // #swagger.description = 'This route allows you to update a recipe by its id.'
 
+    try {
         // Validation rules
         await Promise.all([
             body('title').trim().isLength({ min: 2 }).withMessage('Title is required').run(req),
@@ -110,6 +113,10 @@ async function updateRecipe(req, res, next) {
 
 // Get recipe by id
 async function getRecipe(req, res, next) {
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'Get a recipe'
+    // #swagger.description = 'This route allows you to get a recipe by its id.'
+
     try {
         // Check if recipeId parameter is present
         if (!req.params.recipeId) {
