@@ -89,12 +89,19 @@ async function createNewComment(req, res, next){
         const user = new ObjectId(userId);
         const recipe = new ObjectId(recipeId);
 
+        // Timestamp for comment
+
+        const date = new Date()
+
+        const commentDate = date.toISOString();
+
         // Create document and insert into collection
 
         const comment = {
             userId: user,
             recipeId: recipe,
-            text
+            text,
+            commentDate
         };
 
         const result = await mongo

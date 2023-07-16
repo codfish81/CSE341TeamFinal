@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./path/swagger-output.json')
@@ -9,6 +10,11 @@ const port = process.env.PORT || 8080
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use(express.static(path.join(__dirname, '/public')))
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
 app.use(bodyParser.json());
 app.use('/', require('./routes'));
 
