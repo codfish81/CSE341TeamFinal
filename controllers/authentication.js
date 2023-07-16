@@ -18,18 +18,22 @@ const ensureGuest = (req, res, next) => {
 };
 
 // Authenticate with Google
-const authenticateWithGoogle = passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account'  });
+const authenticateWithGoogle = passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' });
 
 // Google authentication callback
 const googleCallback = (req, res, next) => {
   passport.authenticate('google', { failureRedirect: '/' }, (err, user, info) => {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/'); }
-    req.logIn(user, function(err) {
+
+    else { req.session.userId = user._id.toHexString(); }
+
+    req.logIn(user, function (err) {
       if (err) { return next(err); }
       return res.redirect('/auth/dashboard');
     });
   })(req, res, next);
+  
 };
 
 // Logout

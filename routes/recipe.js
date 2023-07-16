@@ -2,6 +2,9 @@ const router = require('express').Router();
 
 const { addRecipe, updateRecipe, getRecipe, getRecipesByCategory, getRecipesByKeyword, getRecipesByUser, deleteRecipe, addRecipeImage, removeRecipeImage } = require('../controllers/recipe');
 
+// Add recipe
+router.post('/addRecipe', addRecipe);
+
 // Update recipe by id
 router.put('/updateRecipe/:recipeId', updateRecipe);
 
@@ -15,7 +18,8 @@ router.get('/getCategory/:categoryId', getRecipesByCategory);
 router.get('/getKeyword/:searchKey', getRecipesByKeyword);
 
 // Get recipes submitted by a user
-router.get('/getUserRecipe/:userId', getRecipesByUser);
+router.get('/getUserRecipes/:userId', getRecipesByUser);
+router.get('/getUserRecipes', getRecipesByUser);
 
 // Delete recipe by id
 router.delete('/deleteRecipe/:recipeId', deleteRecipe);

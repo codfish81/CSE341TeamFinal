@@ -63,9 +63,9 @@ async function updateRecipe(req, res, next) {
             body('description').trim().isLength({ min: 2 }).withMessage('Description is required').run(req),
             body('ingredients').trim().isLength({ min: 2 }).withMessage('Ingredients are required').run(req),
         ]);
-        
+
         const errors = validationResult(req);
-        
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
@@ -222,23 +222,16 @@ async function getRecipesByKeyword(req, res, next) {
     }
 }
 
-// Get recipes by userId
 async function getRecipesByUser(req, res, next) {
     try {
-        // #swagger.tags = ['Recipes']
-        // #swagger.summary = 'Get recipes submitted by a user'
-        // #swagger.description = 'This route allows you to retrieve recipes submitted by a specific user.'
-
-        // Validation rules
-        await param('userId').notEmpty().withMessage('User ID is required').run(req);
-
-        // Check for validation errors
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+        // Check if the userId parameter is provided in the request
+        if (req.params.userId) {
+            // Use parameter if given
+            userId = req.params.userId;
+        } else {
+            // Otherwise, use the userId from the session
+            userId = req.session.passport.user
         }
-
-        const userId = req.params.userId;
 
         // Execute the database query
         const recipes = await mongo

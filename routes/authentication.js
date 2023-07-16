@@ -1,12 +1,6 @@
 const router = require('express').Router();
-const path = require('path');
-const {
-  ensureGuest,
-  ensureAuth,
-  authenticateWithGoogle,
-  googleCallback,
-  logout,
-} = require('../controllers/authentication');
+const { ensureGuest, ensureAuth, authenticateWithGoogle, googleCallback, logout } = require('../controllers/authentication');
+const { getRecipesByUser } = require('../controllers/recipe');
 
 // Ensure user is authenticated
 router.get('/', ensureGuest, (req, res) => {

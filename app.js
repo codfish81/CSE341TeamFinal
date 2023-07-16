@@ -7,26 +7,20 @@ const mongodb = require('./db/connect');
 const app = express();
 const passport = require('passport');
 const session = require('express-session');
-const path = require('path');
+const sessionStore = new session.MemoryStore();
 
 const port = process.env.PORT || 8080;
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Passport
-require('./passport')(passport);
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Session
-app.use(
-  session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore
+}));
 
 // Passport
 require('./passport')(passport);

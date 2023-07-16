@@ -9,9 +9,10 @@ module.exports = function (passport) {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.SECRET,
         callbackURL: '/auth/google/callback',
-        profileFields: ['emails']
+        profileFields: ['emails'],
+        passReqToCallback: true, // Pass the req object to the callback
       },
-      async (accessToken, refreshToken, profile, done) => {
+      async (req, accessToken, refreshToken, profile, done) => {
         try {
           // Check if a user with the same googleId already exists in the database
           const existingUser = await mongo
@@ -21,7 +22,9 @@ module.exports = function (passport) {
             .findOne({ googleId: profile.id });
 
           if (existingUser) {
-            // If a user with the same googleId already exists, pass it to the done callback
+            // If a user with the same googleId already exists, update the req.session.userId
+            req.session.userId = existingUser._id;
+
             done(null, existingUser);
           } else {
             // If no user with the same googleId exists, create a new user object
@@ -30,7 +33,7 @@ module.exports = function (passport) {
               displayName: profile.displayName,
               firstName: profile.name.givenName,
               lastName: profile.name.familyName,
-              email: profile.emails[0].value
+              email: profile.emails[0].value,
             };
 
             // Insert the new user into the database
@@ -46,9 +49,12 @@ module.exports = function (passport) {
                 .db('flavor-hub')
                 .collection('user')
                 .findOne({ _id: result.insertedId });
+
+              // Store the user._id in req.session
+              req.session.userId = user._id;
+
               done(null, user);
             } else {
-              // Handle the case when acknowledged is false
               const error = new Error('Error inserting user');
               done(error);
             }
