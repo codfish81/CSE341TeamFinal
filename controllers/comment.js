@@ -109,10 +109,10 @@ async function createNewComment(req, res, next){
             .db('flavor-hub')
             .collection('comment')
             .insertOne(comment);
-        res.send(result).status(200);
+        res.status(201).json({insertedId: result.insertedId});
             
     } catch (error) {
-        res.status(500).send("Error creating comment: " + error);
+        res.status(500).json("{error: Error creating comment: " + error + "}");
     }
  }
 async function updateComment(req, res, next){
@@ -143,9 +143,9 @@ async function updateComment(req, res, next){
             .db('flavor-hub')
             .collection('comment')
             .updateOne({_id: commentId}, {$set: {text: text}});
-        res.send(result).status(200);
+        res.status(200).json({acknowledged: result.acknowledged, modifiedCount: result.modifiedCount});
     } catch (error) {
-        res.status(501).send("Error updating comment: " + error);
+        res.status(501).json("{error: Error updating comment: " + error + "}");
     }
 }
 async function deleteComment(req, res, next){
@@ -163,9 +163,10 @@ async function deleteComment(req, res, next){
             .db('flavor-hub')
             .collection('comment')
             .deleteOne({_id: commentId});
-        res.status(200).send(`{"responseMessage": "Comment record (${commentId}) was deleted successfully"}`);
-    } catch (error) {
-        res.status(502).send(`{"responseMessage": "Something went wrong when trying to delete comment ${commentId}: ${error}"}`);
+
+            res.status(200).json(result);
+        } catch (error) {
+        res.status(502).json(error);
     }
 
 
