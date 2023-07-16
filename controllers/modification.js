@@ -93,6 +93,7 @@ async function addNewMod(collection, userId, type)
         .db('flavor-hub')
         .collection('modification')
         .insertOne(modified);
+    return true;
 }
 
 async function updateModById(req, res, next)
