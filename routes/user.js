@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const usersController = require('../controllers/user')
+const {validateNewUser, validateUserId, validateUpdateUser} = require('../validation/validateUser')
 
-router.get('/:userId', usersController.getUserByUserId);
+router.get('/:userId', validateUserId(), usersController.getUserByUserId);
 
-router.post('/', usersController.createNewUser);
+router.post('/', validateNewUser(), usersController.createNewUser);
 
-router.put('/:userId', usersController.updateUser);
+router.put('/:userId', validateUpdateUser(), usersController.updateUser);
 
 router.delete('/:userId', usersController.deleteUser);
 
