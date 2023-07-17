@@ -3,8 +3,8 @@ const modController = require('../controllers/modification')
 
 router.get('/', modController.getAllMod);
 router.get('/:modId', modController.getModById);
-router.get('/mod/:userId', modController.getModByUserId);
-router.get('/mod/:recipeTypeId', modController.getModByType);
+router.get('/:userId', modController.getModByUserId);
+router.get('/:recipeTypeId', modController.getModByType);
 
 router.post('/', modController.addNewMod);
 
