@@ -1,14 +1,31 @@
 const path = require('path');
 const express = require('express');
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./path/swagger-output.json')
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./path/swagger-output.json');
 const bodyParser = require('body-parser');
 const mongodb = require('./db/connect');
 const app = express();
-const port = process.env.PORT || 8080
+const passport = require('passport');
+const session = require('express-session');
+const sessionStore = new session.MemoryStore();
+
+const port = process.env.PORT || 8080;
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Session
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore
+}));
+
+// Passport
+require('./passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, '/public')))
 app.use((req, res, next) => {
@@ -16,15 +33,18 @@ app.use((req, res, next) => {
     next();
 })
 app.use(bodyParser.json());
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
 app.use('/', require('./routes'));
 
-
-
 mongodb.connect((err, mongodb) => {
-    if(err) {
-        console.log(err);
-    } else {
-        app.listen(port);
-        console.log(`Connected to DB and listening on ${port}`);
-    }
-})
+  if (err) {
+    console.log(err);
+  } else {
+    app.listen(port);
+    console.log(`Connected to DB and listening on ${port}`);
+  }
+});

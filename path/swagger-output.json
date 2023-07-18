@@ -12,6 +12,71 @@
     "https"
   ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/recipe/addRecipe": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Add a new recipe",
+        "description": "This route allows you to create a new recipe.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "ingredients": {
+                  "example": "any"
+                },
+                "instructions": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "servingSize": {
+                  "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "dateAdded": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/recipe/updateRecipe/{recipeId}": {
       "put": {
         "tags": [
@@ -63,6 +128,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
@@ -123,6 +191,9 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -151,19 +222,22 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       }
     },
-    "/recipe/getUserRecipe/{userId}": {
+    "/recipe/getUserRecipes/{userId}": {
       "get": {
         "tags": [
           "Recipes"
         ],
-        "summary": "Get recipes submitted by a user",
-        "description": "This route allows you to retrieve recipes submitted by a specific user.",
+        "summary": "Get recipes by a user",
+        "description": "This route allows you to get recipes by a user.",
         "parameters": [
           {
             "name": "userId",
@@ -172,6 +246,26 @@
             "type": "string"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipe/getUserRecipes": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipes by a user",
+        "description": "This route allows you to get recipes by a user.",
         "responses": {
           "200": {
             "description": "OK"
@@ -204,55 +298,14 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/recipe/uploadImage/{recipeId}": {
-      "post": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Add recipe image",
-        "description": "This route allows you to add an image to a recipe.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/recipe/deleteImage/{recipeId}": {
-      "delete": {
-        "tags": [
-          "Recipes"
-        ],
-        "summary": "Remove recipe image",
-        "description": "This route allows you to remove an image from a recipe.",
-        "parameters": [
-          {
-            "name": "recipeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
           }
         }
       }
@@ -368,7 +421,6 @@
         ],
         "summary": "Create a new User",
         "description": "This request creates a new user",
-
         "parameters": [
           {
             "name": "user",
@@ -399,7 +451,6 @@
             }
           }
         ],
-
         "responses": {
           "201": {
             "description": "Created"
@@ -416,11 +467,9 @@
           "Modifications"
         ],
         "description": "",
-
         "produces": [
           "application/json"
         ],
-
         "responses": {
           "200": {
             "description": "OK"
@@ -607,6 +656,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -641,6 +693,9 @@
           "200": {
             "description": "OK"
           },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
           "501": {
             "description": "Not Implemented"
           },
@@ -667,6 +722,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "502": {
             "description": "Bad Gateway"
@@ -696,6 +754,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -721,6 +782,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -732,7 +796,6 @@
         ],
         "summary": "Create a new Comment",
         "description": "This request creates a new comment",
-
         "parameters": [
           {
             "name": "comment",
@@ -763,13 +826,81 @@
             }
           }
         ],
-
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Ensure guest",
+        "description": "This route ensures that the user is not authenticated",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Google OAuth callback",
+        "description": "This is a callback route for logging in with Google OAuth",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout",
+        "description": "This route will log the user out",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/dashboard": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
