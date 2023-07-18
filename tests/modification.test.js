@@ -19,7 +19,7 @@ jest.mock('../db/connect', () => ({
     {
         '_id': new ObjectId('64a22c4d51e7e53a3553526a'),
         'modified_collection': "comment",
-        'modified_type': "text",
+        'modified_type': "Edit Comment",
         'userId': new ObjectId('6497d5d064035756f4d29abc')
     };
 
@@ -90,7 +90,7 @@ it('Testing getModByUserId', async () => {
 
     const userId = '6497d5d064035756f4d29abc';
     const modCollection = 'comment';
-    const modType = 'text';
+    const modType = 'New Comment';
     const insertedId = '6497d5d064035756f6549ggh';
   
     // Mock the request object
@@ -119,10 +119,10 @@ it('Testing getModByUserId', async () => {
     mongo.getConnection().insertOne.mockResolvedValue(mockInsertResult);
   
     // Call the function
-    await modController.addNewMod(req, res);
+    await modController.addNewMod(modCollection, userId, modType);
     // Make assertions
     expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith( mockInsertResult);
+    expect(res.json).toHaveBeenCalledWith(mockInsertResult);
     expect(mongo.getConnection().insertOne).toHaveBeenCalledWith(
         {
             date: today_date,
