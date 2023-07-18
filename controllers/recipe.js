@@ -285,7 +285,7 @@ async function deleteRecipe(req, res, next) {
         //      type: 'string'
         // }
 
-        const recipeId = req.params.recipeId;
+        const recipeId = new ObjectId(req.params.recipeId);
 
         // Validation rules
         await validationResult(req);
@@ -297,6 +297,8 @@ async function deleteRecipe(req, res, next) {
         }
 
         const result = await mongo.getConnection().db('flavor-hub').collection('recipe').deleteOne({ _id: recipeId });
+
+        console.log(result)
 
         if (result.deletedCount === 1) {
             res.status(200).json({ message: 'Recipe deleted' });

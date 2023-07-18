@@ -430,6 +430,14 @@
             "schema": {
               "type": "object",
               "properties": {
+                "googleId": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "displayName": {
+                  "type": "string",
+                  "example": "any"
+                },
                 "firstName": {
                   "type": "string",
                   "example": "any"
@@ -444,6 +452,8 @@
                 }
               },
               "required": [
+                "googleId",
+                "displayName",
                 "firstName",
                 "lastName",
                 "email"
