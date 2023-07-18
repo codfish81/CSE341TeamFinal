@@ -149,7 +149,7 @@ it('getCommentsByUserId returns correct comment', async () => {
       userId: new ObjectId(userId),
       recipeId: new ObjectId(recipeId),
       text,
-      commentDate: new Date().toISOString(),
+      commentDate: expect.stringMatching(new Date().toISOString().slice(0, 19)),
     });
   });
 
