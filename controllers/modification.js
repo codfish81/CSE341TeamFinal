@@ -13,6 +13,7 @@ async function getAllMod(req, res, next)
         {
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(lists);
+            return true;
         });
     }
     catch(error)
@@ -89,6 +90,7 @@ async function addNewMod(collection, userId, type)
         .db('flavor-hub')
         .collection('modification')
         .insertOne(modified);
+    return true;
 }
 
 async function updateModById(req, res, next)
@@ -143,6 +145,7 @@ async function deleteModById(req, res, next)
             throw new Error('Invalid ID');
         }
         const modId = new ObjectId(req.params.modId);
+        const userId = "Temp1648284"
         const response = await mongo
         .getConnection()
         .db('flavor-hub')
@@ -152,7 +155,7 @@ async function deleteModById(req, res, next)
         if (response.deletedCount > 0) 
         {
             res.status(200).send();
-            modify();
+            addNewMod("Modification", userId, "Modification Deleted");
         } 
         else 
         {
