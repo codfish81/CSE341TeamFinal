@@ -1,4 +1,5 @@
 const mongo = require('../db/connect');
+const modify = require('./modification');
 const ObjectId = require('mongodb').ObjectId;
 const { param, validationResult } = require('express-validator');
 const { body } = require('express-validator');
@@ -47,6 +48,9 @@ async function addRecipe(req, res, next) {
         });
 
         res.status(201).json({ id: result.insertedId });
+
+        await modify.addNewMod("Recipe", result.userId, "Added recipe");
+
     } catch (error) {
         next(error);
     }
@@ -55,9 +59,9 @@ async function addRecipe(req, res, next) {
 
 // Update recipe by id
 async function updateRecipe(req, res, next) {
-        // #swagger.tags = ['Recipes']
-        // #swagger.summary = 'Update recipe by id'
-        // #swagger.description = 'This route allows you to update a recipe by its id.'
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'Update recipe by id'
+    // #swagger.description = 'This route allows you to update a recipe by its id.'
 
     try {
         // Validation rules
@@ -103,6 +107,9 @@ async function updateRecipe(req, res, next) {
         );
         if (result.matchedCount === 1) {
             res.status(200).json({ message: 'Recipe updated' });
+
+            await modify.addNewMod("Recipe", result.userId, "Updated recipe");
+
         } else {
             res.status(404).json({ message: 'Recipe not found' });
         }
@@ -230,6 +237,9 @@ async function getRecipesByKeyword(req, res, next) {
 }
 
 async function getRecipesByUser(req, res, next) {
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'Get recipes by a user'
+    // #swagger.description = 'This route allows you to get recipes by a user.'
     try {
         // Check if the userId parameter is provided in the request
         if (req.params.userId) {
@@ -290,6 +300,9 @@ async function deleteRecipe(req, res, next) {
 
         if (result.deletedCount === 1) {
             res.status(200).json({ message: 'Recipe deleted' });
+
+            await modify.addNewMod("Recipe", result.userId, "Deleted recipe");
+
         } else {
             res.status(404).json({ message: 'Recipe not found' });
         }

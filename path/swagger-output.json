@@ -79,7 +79,11 @@
     },
     "/recipe/updateRecipe/{recipeId}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Update recipe by id",
+        "description": "This route allows you to update a recipe by its id.",
         "parameters": [
           {
             "name": "recipeId",
@@ -136,7 +140,11 @@
     },
     "/recipe/getRecipe/{recipeId}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get a recipe",
+        "description": "This route allows you to get a recipe by its id.",
         "parameters": [
           {
             "name": "recipeId",
@@ -225,7 +233,11 @@
     },
     "/recipe/getUserRecipes/{userId}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipes by a user",
+        "description": "This route allows you to get recipes by a user.",
         "parameters": [
           {
             "name": "userId",
@@ -249,7 +261,11 @@
     },
     "/recipe/getUserRecipes": {
       "get": {
-        "description": "",
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipes by a user",
+        "description": "This route allows you to get recipes by a user.",
         "responses": {
           "200": {
             "description": "OK"
@@ -640,6 +656,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -674,6 +693,9 @@
           "200": {
             "description": "OK"
           },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
           "501": {
             "description": "Not Implemented"
           },
@@ -700,6 +722,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "502": {
             "description": "Bad Gateway"
@@ -729,6 +754,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -754,6 +782,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -796,8 +827,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "500": {
             "description": "Internal Server Error"
@@ -807,7 +841,11 @@
     },
     "/auth/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Ensure guest",
+        "description": "This route ensures that the user is not authenticated",
         "responses": {
           "default": {
             "description": ""
@@ -827,7 +865,11 @@
     },
     "/auth/google/callback": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Google OAuth callback",
+        "description": "This is a callback route for logging in with Google OAuth",
         "responses": {
           "default": {
             "description": ""
@@ -837,7 +879,11 @@
     },
     "/auth/logout": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout",
+        "description": "This route will log the user out",
         "responses": {
           "default": {
             "description": ""
@@ -847,26 +893,14 @@
     },
     "/auth/dashboard": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/auth/userId": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
