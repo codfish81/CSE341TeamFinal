@@ -136,27 +136,32 @@ async function updateComment(req, res, next){
             text: 'I really like this recipe, but...'
         }
     */
-    try {
-        // get comment id from parameter and text from request body
-        const commentId = new ObjectId(req.params.commentId);
-        const {text} = req.body;
-
-        const commentRecord = await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('comment').find({_id: commentId}).toArray();
-
-        // update document and display results
-        const result = await mongo.getConnection()
-            .db('flavor-hub')
-            .collection('comment')
-            .updateOne({_id: commentId}, {$set: {text: text}});
-        res.status(200).json({acknowledged: result.acknowledged, modifiedCount: result.modifiedCount});
-
-        await modify.addNewMod("comment", commentRecord[0].userId, "Modified comment");
-    } catch (error) {
-        res.status(501).json("{error: Error updating comment: " + error + "}");
-    }
+        try {
+            // Get comment id from parameter and text from request body
+            const commentId = new ObjectId(req.params.commentId);
+            const { text } = req.body;
+          
+            const commentRecord = await mongo
+              .getConnection()
+              .db('flavor-hub')
+              .collection('comment')
+              .find({ _id: commentId })
+              .toArray();
+          
+            // Update document and display results
+            const result = await mongo.getConnection()
+              .db('flavor-hub')
+              .collection('comment')
+              .updateOne({ _id: commentId }, { $set: { text: text } });
+          
+            await modify.addNewMod("comment", commentRecord[0].userId, "Modified comment");
+          
+            // Send the successful JSON response
+            res.status(200).json({ acknowledged: result.acknowledged, modifiedCount: result.modifiedCount });
+          } catch (error) {
+            // Send the error JSON response
+            res.status(501).json({ error: "Error updating comment: " + error });
+          }
 }
 async function deleteComment(req, res, next){
     // #swagger.tags = ['Comments']
@@ -165,25 +170,30 @@ async function deleteComment(req, res, next){
     // #swagger.parameters['commentId'] = { description: 'Comment id' }
 
     try {
-        // get comment id from request parameters
+        // Get comment id from request parameters
         const commentId = new ObjectId(req.params.commentId);
-
+      
         const commentRecord = await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('comment').find({_id: commentId}).toArray();
-
-        // delete document from collection 
+          .getConnection()
+          .db('flavor-hub')
+          .collection('comment')
+          .find({ _id: commentId })
+          .toArray();
+      
+        // Delete document from collection
         const result = await mongo.getConnection()
-            .db('flavor-hub')
-            .collection('comment')
-            .deleteOne({_id: commentId});
-            res.status(200).json(result);
-        
+          .db('flavor-hub')
+          .collection('comment')
+          .deleteOne({ _id: commentId });
+      
         await modify.addNewMod("comment", commentRecord[0].userId, "Deleted comment");
-        } catch (error) {
+      
+        // Send the successful JSON response
+        res.status(200).json(result);
+      } catch (error) {
+        // Send the error JSON response
         res.status(502).json(error);
-    }
+      }
 
 
 }
