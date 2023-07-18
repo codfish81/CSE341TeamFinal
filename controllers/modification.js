@@ -55,7 +55,7 @@ async function getModByUserId(req, res, next)
     {
         ('Invalid ID');
     
-    
+    }
         const userId = new ObjectId(req.params.userId);
         const result = await mongo
             .getConnection()
@@ -68,7 +68,7 @@ async function getModByUserId(req, res, next)
             res.status(200).json(lists[0]);
         });
 
-    }
+    
 }
 
 async function addNewMod(collection, userId, type)
@@ -93,16 +93,15 @@ async function addNewMod(collection, userId, type)
         .db('flavor-hub')
         .collection('modification')
         .insertOne(modified);
-    return true;
 }
 
-async function updateModById(req, res, next)
+async function updateModById(req, res)
 {
     // #swagger.tags = ['Modifications']
 
     try
     {
-        if (!ObjectId.isValid(req.params.modId)) 
+        if(!ObjectId.isValid(req.params.modId)) 
         {
             throw new Error('Invalid ID');
         }
@@ -120,6 +119,7 @@ async function updateModById(req, res, next)
             .db('flavor-hub')
             .collection('modification')
             .replaceOne({ _id: modId }, modified);
+
         console.log(response);
         if (response.modifiedCount > 0)
         {
