@@ -171,10 +171,7 @@ async function deleteComment(req, res, next){
         const commentRecord = await mongo
             .getConnection()
             .db('flavor-hub')
-            .collection('comment').find({_id: commentId});
-        commentRecord.toArray().then((lists) => {
-            res.status(200).json(lists[0]);
-        });
+            .collection('comment').find({_id: commentId}).toArray();
 
         // delete document from collection 
         const result = await mongo.getConnection()
@@ -183,7 +180,7 @@ async function deleteComment(req, res, next){
             .deleteOne({_id: commentId});
             res.status(200).json(result);
         
-        await modify.addNewMod("comment", commentRecord.userId, "Deleted comment");
+        await modify.addNewMod("comment", commentRecord[0].userId, "Deleted comment");
         } catch (error) {
         res.status(502).json(error);
     }
