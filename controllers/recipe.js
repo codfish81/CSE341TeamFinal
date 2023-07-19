@@ -242,13 +242,6 @@ async function getRecipesByUser(req, res, next) {
     // #swagger.summary = 'Get recipes by a user'
     // #swagger.description = 'This route allows you to get recipes by a user.'
     try {
-        // Check if userId parameter is present
-        if (!req.params.userId) {
-            return res.status(400).json({ message: 'Missing userId parameter' });
-        }
-
-        // Validation rules
-        await param('userId').isMongoId().withMessage('Invalid user ID').run(req);
 
         // Check for validation errors
         const errors = validationResult(req);
@@ -262,9 +255,11 @@ async function getRecipesByUser(req, res, next) {
         if (req.params.userId) {
             // Use parameter if given
             userId = new ObjectId(req.params.userId);
+            console.log('1')
         } else {
             // Otherwise, use the userId from the session
             userId = req.session.passport.user
+            console.log(userId)
         }
 
         const recipes = await mongo.getConnection().db('flavor-hub').collection('recipe').find({ userId: userId.toString() }).toArray();
