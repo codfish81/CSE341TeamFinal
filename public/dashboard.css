@@ -1,0 +1,77 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    margin: 16px 0;
+}
+
+p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+.recipe, .no-recipes {
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    margin: 16px auto;
+    padding: 16px;
+    width: 80%;
+}
+
+.no-recipes {
+    text-align: center;
+}
+
+.header {
+    position: relative;
+}
+
+#signOut {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color:white;
+    cursor:pointer;
+    font-size:16px; 
+    padding:12px 24px; 
+    position:absolute; 
+    text-align:center; 
+    text-decoration:none; 
+    top:8px; 
+    right:16px; 
+}
+
+#signOut:hover {
+   background-color:#3e8e41;
+}
+
+#signIn {
+   background-color:#4CAF50;
+   border:none; 
+   border-radius:4px; 
+   color:white; 
+   cursor:pointer; 
+   display:block; 
+   font-size:16px; 
+   left:50%; 
+   margin-left:-70px; 
+   padding:12px 24px; 
+   position:absolute; 
+   text-align:center; 
+   text-decoration:none; 
+   top:20%;
+}
+
+#signIn:hover {
+   background-color:#3e8e41;
+}
