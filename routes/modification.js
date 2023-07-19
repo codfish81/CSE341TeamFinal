@@ -4,15 +4,15 @@ const {  ensureAuth } = require('../controllers/authentication');
 const { modIdValidation, userIdValidation, typeIdValidation, addNewModValidation, updateModByIdValidation, validateError, deleteModByIdValidation } = require('../validation/modificationValidation')
 
 router.get('/', modController.getAllMod);
-router.get('/:modId', modIdValidation(), validateError, ensureAuth, modController.getModById);
-router.get('/:userId', userIdValidation(), validateError, ensureAuth, modController.getModByUserId);
-router.get('/:recipeTypeId', typeIdValidation(), validateError, ensureAuth, modController.getModByType);
+router.get('/:modId', modIdValidation(), validateError, modController.getModById);
+router.get('/:userId', userIdValidation(), validateError, modController.getModByUserId);
+router.get('/:recipeTypeId', typeIdValidation(), validateError, modController.getModByType);
 
-router.post('/', addNewModValidation(), validateError, ensureAuth, modController.addNewMod);
+router.post('/', addNewModValidation(), validateError, modController.addNewMod);
 
-router.put('/:modId', updateModByIdValidation(), validateError, ensureAuth, modController.updateModById);
+router.put('/:modId', updateModByIdValidation(), validateError, modController.updateModById);
 
-router.delete('/:modId', deleteModByIdValidation(), validateError, ensureAuth, modController.deleteModById);
+router.delete('/:modId', deleteModByIdValidation(), validateError, modController.deleteModById);
 
 
 module.exports = router;
