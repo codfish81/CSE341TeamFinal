@@ -11,6 +11,8 @@ const createNewUser = async(req, res, next) => {
      description: 'New User', 
      required: true, 
      schema: {
+        $googleId: 'any',
+        $displayName: 'any',
        $firstName: 'any',
        $lastName : 'any',
        $email: 'any'}}*/
