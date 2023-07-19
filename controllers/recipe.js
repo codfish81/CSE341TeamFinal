@@ -236,29 +236,39 @@ async function getRecipesByKeyword(req, res, next) {
     }
 }
 
+// Get recipes by user id
 async function getRecipesByUser(req, res, next) {
     // #swagger.tags = ['Recipes']
     // #swagger.summary = 'Get recipes by a user'
     // #swagger.description = 'This route allows you to get recipes by a user.'
     try {
+        // Check if userId parameter is present
+        if (!req.params.userId) {
+            return res.status(400).json({ message: 'Missing userId parameter' });
+        }
+
+        // Validation rules
+        await param('userId').isMongoId().withMessage('Invalid user ID').run(req);
+
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        let userId;
+
         // Check if the userId parameter is provided in the request
         if (req.params.userId) {
             // Use parameter if given
-            userId = req.params.userId;
+            userId = new ObjectId(req.params.userId);
         } else {
             // Otherwise, use the userId from the session
             userId = req.session.passport.user
         }
 
-        // Execute the database query
-        const recipes = await mongo
-            .getConnection()
-            .db('flavor-hub')
-            .collection('recipe')
-            .find({ userId: userId })
-            .toArray();
+        const recipes = await mongo.getConnection().db('flavor-hub').collection('recipe').find({ userId: userId.toString() }).toArray();
 
-        // Check if any recipes were found
         if (recipes.length > 0) {
             // Respond with the found recipes
             return res.status(200).json(recipes);
@@ -266,10 +276,10 @@ async function getRecipesByUser(req, res, next) {
             // No recipes found for the specified userId
             return res.status(404).json({ message: 'No recipes found for the specified userId' });
         }
+
     } catch (error) {
-        // Handle any caught errors
         console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 }
 
