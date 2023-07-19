@@ -8,6 +8,8 @@ const app = express();
 const passport = require('passport');
 const session = require('express-session');
 const sessionStore = new session.MemoryStore();
+const { ensureAuth } = require('./controllers/authentication');
+
 
 const port = process.env.PORT || 8080;
 

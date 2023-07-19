@@ -250,6 +250,9 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -269,6 +272,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
@@ -476,7 +482,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "produces": [
           "application/json"
         ],
@@ -493,7 +500,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "responses": {
           "default": {
             "description": ""
@@ -506,7 +514,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "produces": [
           "application/json"
         ],
@@ -528,7 +537,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "parameters": [
           {
             "name": "modId",
@@ -574,7 +584,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "parameters": [
           {
             "name": "modId",
@@ -601,7 +612,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "produces": [
           "application/json"
         ],
@@ -625,7 +637,8 @@
         "tags": [
           "Modifications"
         ],
-        "description": "",
+        "summary": "Ensure authentication",
+        "description": "This route ensures that the user is authenticated",
         "produces": [
           "application/json"
         ],
