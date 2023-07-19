@@ -123,7 +123,7 @@ async function updateModById(req, res)
         console.log(response);
         if (response.modifiedCount > 0)
         {
-            res.status(204).send();
+            res.status(204).send(response);
             addNewMod("Modifications", "123456", "Update Modifications");
         } 
         else 

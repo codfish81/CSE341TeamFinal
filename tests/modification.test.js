@@ -130,53 +130,50 @@ jest.mock('../db/connect', () => ({
 //   });
   // -------------------------------------------------------------------------------------
   it('Tests updateMod', async () => {
-
     const date = "10/20/2050";
     const collection = "Modification";
     const modId = '64b34fc105a69bd4cd86e0da';
     const newType = 'Modification Updated';
     const userId = '6497d5d064035756f4d29abc';
-
-    const req = 
-    { 
-        params: 
-        { 
-            modId 
-        }, 
-        body: 
-        {
-            date: date,
-            modified_collection: collection,
-            modified_type: newType,
-            userId: userId
-        }
-    }; 
-
-    const res = 
-    {
-      status: jest.fn().mockReturnThis(), 
-      json: jest.fn()
+  
+    const req = {
+      params: {
+        modId
+      },
+      body: {
+        today_date: date,
+        collection: collection,
+        type: newType,
+        userId: userId
+      }
     };
-
-    const mockUpdateResult = jest.fn().mockImplementation(() => Promise.resolve(
-        {
-            acknowledged: true,
-            modifiedCount: 1
-        }
-    ));
-    mongo.getConnection().updateOne = mockUpdateResult;
-
+  
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn()
+    };
+  
+    const mockUpdateResult = jest.fn().mockImplementation(() => Promise.resolve({
+      acknowledged: true,
+      modifiedCount: 1
+    }));
+    mongo.getConnection().replaceOne = mockUpdateResult;
+  
     await modController.updateModById(req, res);
-
+  
     expect(res.status).toHaveBeenCalledWith(204);
-    expect(res.json).toHaveBeenCalledWith(
-        {
-            acknowledged: true,
-            modifiedCount: 1,
-        }
-    );
-    expect(mongo.getConnection().updateOne).toHaveBeenCalledWith(
-      { _id: '64b34fc105a69bd4cd86e0da'},
-      { $set: { modified_type: newType }}
+    expect(res.send).toHaveBeenCalledWith({
+      acknowledged: true,
+      modifiedCount: 1
+    });
+    expect(mongo.getConnection().replaceOne).toHaveBeenCalledWith(
+      { _id: new ObjectId('64b34fc105a69bd4cd86e0da') },
+      { 
+        date: date,
+        modified_collection: collection,
+        modified_type: newType,
+        userId: userId 
+      }
     );
   });
+  
