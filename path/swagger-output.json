@@ -482,8 +482,7 @@
         "tags": [
           "Modifications"
         ],
-        "summary": "Ensure authentication",
-        "description": "This route ensures that the user is authenticated",
+        "description": "",
         "produces": [
           "application/json"
         ],
@@ -503,8 +502,8 @@
         "summary": "Ensure authentication",
         "description": "This route ensures that the user is authenticated",
         "responses": {
-          "default": {
-            "description": ""
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -530,6 +529,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -575,6 +577,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -600,6 +605,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "500": {
             "description": "Internal Server Error"
@@ -628,6 +636,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -653,6 +664,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }

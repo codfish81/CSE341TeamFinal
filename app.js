@@ -11,6 +11,7 @@ const sessionStore = new session.MemoryStore();
 const { ensureAuth } = require('./controllers/authentication');
 
 
+
 const port = process.env.PORT || 8080;
 
 // Swagger

@@ -2,13 +2,15 @@ const googleAuth = require('passport-google-oauth20').Strategy;
 const mongo = require('./db/connect');
 const { ObjectId } = require('mongodb');
 
+
 module.exports = function (passport) {
   passport.use(
     new googleAuth(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.SECRET,
-        callbackURL: '/auth/google/callback',
+        // callbackURL: '/auth/google/callback',
+        callbackURL: 'https://localhost:8080/auth/google/callback',
         profileFields: ['emails'],
         passReqToCallback: true, // Pass the req object to the callback
       },
